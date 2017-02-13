@@ -48,6 +48,8 @@ int main(int argc, char *argv[])
 
     //Declare video capture object
     VideoCapture capture;
+    VideoWriter writer;
+
     //Open a video stream
     //    capture.open(0);
     capture.open(argv[1]);
@@ -72,6 +74,7 @@ int main(int argc, char *argv[])
     char key;
     capture >> input_image;
 
+    writer.open("RecordedVideo.avi",CV_FOURCC('X','V','I','D'),30,Size(input_image.cols,input_image.rows),true);
     vector<Point> roi_crossing_blobs_prev;
 
     int left_crossing_counter = 0, right_crossing_counter = 0;
@@ -350,6 +353,7 @@ int main(int argc, char *argv[])
 
             imshow("People Counter",input_image);
 
+            writer.write(input_image);
             key = waitKey(1);
             if(key == 'q' || key == 'Q')
                 break;
@@ -360,6 +364,7 @@ int main(int argc, char *argv[])
         }
         else
         {
+            writer.release();
             break;
         }
     }
